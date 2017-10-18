@@ -9,10 +9,10 @@ import java.util.Scanner;
 public class InversionsCounting {
     static int counter = 0;
     public static void main(String[] args) {
-        String file_1 = "data05_inversion_01.txt";
-        String file_2 = "data05_inversion_02.txt";
-        String file_3 = "data05_inversion_03.txt";
-        String file_4 = "data05_inversion_04.txt";
+        String file_1 = "Dataset/data05_inversion_01.txt";
+        String file_2 = "Dataset/data05_inversion_02.txt";
+        String file_3 = "Dataset/data05_inversion_03.txt";
+        String file_4 = "Dataset/data05_inversion_04.txt";
         int[] arr_1 = getArray(file_1);
         int[] arr_2 = getArray(file_2);
         int[] arr_3 = getArray(file_3);

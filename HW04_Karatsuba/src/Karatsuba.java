@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Karatsuba {
     public static void main(String[] args) throws IOException {
-        FileReader fileReader = new FileReader("data05_karatsuba.txt");
+        FileReader fileReader = new FileReader("Dataset/data05_karatsuba.txt");
         Scanner scan = new Scanner(fileReader);
 
         Long A = scan.nextLong();
