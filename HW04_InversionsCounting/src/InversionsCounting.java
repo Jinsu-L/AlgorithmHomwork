@@ -1,84 +1,92 @@
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class InversionsCounting {
-    static int counter = 0;
     public static void main(String[] args) {
         String file_1 = "Dataset/data05_inversion_01.txt";
         String file_2 = "Dataset/data05_inversion_02.txt";
         String file_3 = "Dataset/data05_inversion_03.txt";
         String file_4 = "Dataset/data05_inversion_04.txt";
-        int[] arr_1 = getArray(file_1);
-        int[] arr_2 = getArray(file_2);
-        int[] arr_3 = getArray(file_3);
-        int[] arr_4 = getArray(file_4);
-        sortAndCount(arr_1);
-        System.out.println(counter);
+        long[] arr_1 = getArray(file_1);
+        long[] arr_2 = getArray(file_2);
+        long[] arr_3 = getArray(file_3);
+        long[] arr_4 = getArray(file_4);
+
+        System.out.println("Input Data : " + Arrays.toString(arr_1));
+        System.out.println("Output Data : " + sortAndCount(arr_1));
+
+        System.out.println("Input Data : " + Arrays.toString(arr_2));
+        System.out.println("Output Data : " + sortAndCount(arr_2));
+
+        System.out.println("Input Data : " + Arrays.toString(arr_3));
+        System.out.println("Output Data : " + sortAndCount(arr_3));
+
+        System.out.println("Input Data : " + Arrays.toString(arr_4));
+        System.out.println("Output Data : " + sortAndCount(arr_4));
 
     }
 
-    public static int[] sortAndCount(int[] L) {
+    public static long sortAndCount(long[] L) {
         if (L.length <= 1)
-            return L;
+            return 0;
 
 
-        int[] firstHalf = new int[L.length / 2];
-        int[] secondHalf = new int[L.length - firstHalf.length];
-        System.arraycopy(L, 0, firstHalf, 0, firstHalf.length);
-        System.arraycopy(L, firstHalf.length, secondHalf, 0, secondHalf.length);
+        long[] A = new long[L.length / 2];
+        long[] B = new long[L.length - A.length];
+        System.arraycopy(L, 0, A, 0, A.length);
+        System.arraycopy(L, A.length, B, 0, B.length);
 
-        sortAndCount(firstHalf);
-        sortAndCount(secondHalf);   //go recursion!
+        long num_A = sortAndCount(A);
+        long num_B = sortAndCount(B);
 
-        mergeAndCount(firstHalf, secondHalf, L);    //and merge it
-        return L;
+        long num_merge = mergeAndCount(A, B, L);
+        return num_A + num_B + num_merge;
     }
 
-    public static void mergeAndCount(int[] firstHalf, int[] secondHalf, int[] result) {
-        int currentPosOfFirstHalf = 0, currentPosOfSecondHalf = 0, currentPosOfResult = 0;
-        while (currentPosOfFirstHalf < firstHalf.length && currentPosOfSecondHalf < secondHalf.length) {
-            if (firstHalf[currentPosOfFirstHalf] < secondHalf[currentPosOfSecondHalf]) {
-                result[currentPosOfResult] = firstHalf[currentPosOfFirstHalf];
-                ++currentPosOfFirstHalf;
-            } else if (firstHalf[currentPosOfFirstHalf] > secondHalf[currentPosOfSecondHalf]) {
-                result[currentPosOfResult] = secondHalf[currentPosOfSecondHalf];
-                ++currentPosOfSecondHalf;
-                counter = counter + firstHalf.length - currentPosOfFirstHalf;
+    public static long mergeAndCount(long[] A, long[] B, long[] L) {
+        int indexA = 0, indexB = 0, indexInversion = 0;
+        int inversion_count = 0;
+        while (indexA < A.length && indexB < B.length) {
+            if (A[indexA] > B[indexB]) {
+                inversion_count = inversion_count + A.length - indexA;
+                L[indexInversion] = B[indexB];
+                indexB++;
+            } else {
+                L[indexInversion] = A[indexA];
+                indexA++;
             }
 
-            ++currentPosOfResult;
+            indexInversion++;
         }
-        while (currentPosOfFirstHalf != firstHalf.length) {    //yes, i wanna copy it myself
-            result[currentPosOfResult] = firstHalf[currentPosOfFirstHalf];
-            ++currentPosOfFirstHalf;
-            ++currentPosOfResult;
+        while (indexA < A.length) {
+            L[indexInversion] = A[indexA];
+            indexA++;
+            indexInversion++;
         }
-        while (currentPosOfSecondHalf != secondHalf.length) {    //and one more time
-            result[currentPosOfResult] = secondHalf[currentPosOfSecondHalf];
-            ++currentPosOfSecondHalf;
-            ++currentPosOfResult;
+        while (indexB < B.length) {
+            L[indexInversion] = B[indexB];
+            indexB++;
+            indexInversion++;
         }
+        return inversion_count;
     }
 
-    public static int[] getArray(String filepath) {
-        ArrayList<Integer> list = new ArrayList();
+    public static long[] getArray(String filepath) {
+        ArrayList<Long> list = new ArrayList();
 
         try {
             FileReader file = new FileReader(filepath);
-
             Scanner scan = new Scanner(file);
 
-            while (scan.hasNextInt()) {
-                list.add(scan.nextInt());
+            while (scan.hasNextLong()) {
+                list.add(scan.nextLong());
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return list.stream().mapToInt(Integer::intValue).toArray();
+        return list.stream().mapToLong(Long::longValue).toArray();
     }
 }

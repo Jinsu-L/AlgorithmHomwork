@@ -7,9 +7,12 @@ public class Karatsuba {
         FileReader fileReader = new FileReader("Dataset/data05_karatsuba.txt");
         Scanner scan = new Scanner(fileReader);
 
-        Long A = scan.nextLong();
-        Long B = scan.nextLong();
-        System.out.println(karatsuba(A, B));
+        long A = scan.nextLong();
+        long B = scan.nextLong();
+        System.out.println("Input Data : ");
+        System.out.println(A);
+        System.out.println(B);
+        System.out.println("Output Data : " + karatsuba(A, B));
     }
 
     public static long karatsuba(long A, long B) {
