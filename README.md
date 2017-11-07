@@ -12,3 +12,4 @@ The report was written in Korean.
 * HW03 - ClosestPairOfPoints & LoopInvariant(BinarySearch)
 * HW04 - InversionsCounting & Karatsuba
 * HW05 - HuffmanCode & MinimizingLatenessProblem
+* HW06 - Dijkstra & Prim
