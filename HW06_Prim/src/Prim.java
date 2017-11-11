@@ -24,15 +24,14 @@ public class Prim {
 
         while (!queue.isEmpty()) {
             Edge edge = queue.poll();
-            if (visit[edge.child])
-                continue;
-
-            visit[edge.child] = true;
-            cost += edge.cost;
-            System.out.printf("w<%c, %c> = %d\n", (char) ('a' + edge.parent), (char) ('a' + edge.child), edge.cost);
-            for (int i = 0; i < MAXSIZE; i++)
-                if (matrix[edge.child][i] != 0 && matrix[edge.child][i] != maxValue)
-                    queue.add(new Edge(edge.child, i, matrix[edge.child][i]));
+            if (!visit[edge.child]) {
+                visit[edge.child] = true;
+                cost += edge.cost;
+                System.out.printf("w<%c, %c> = %d\n", (char) ('a' + edge.parent), (char) ('a' + edge.child), edge.cost);
+                for (int i = 0; i < MAXSIZE; i++)
+                    if (matrix[edge.child][i] != 0 && matrix[edge.child][i] != maxValue)
+                        queue.add(new Edge(edge.child, i, matrix[edge.child][i]));
+            }
         }
 
         System.out.println("\nw<MST> = " + cost);

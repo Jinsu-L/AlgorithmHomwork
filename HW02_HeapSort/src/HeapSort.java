@@ -130,9 +130,6 @@ public class HeapSort {
         } else {
             largest = index;
         }
-        if (right <= size && nodes[right].values > nodes[largest].values) {
-            largest = right;
-        }
 
         if (largest != index) {
             swap(nodes, largest, index);
