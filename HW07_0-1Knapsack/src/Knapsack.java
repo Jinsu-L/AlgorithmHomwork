@@ -77,7 +77,6 @@ public class Knapsack {
 
         max : 900
         item : 8 7 5 4 3 1
-        item : 8 7 5 4 3 1
 
          */
     }
