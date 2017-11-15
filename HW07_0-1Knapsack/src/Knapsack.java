@@ -38,19 +38,18 @@ public class Knapsack {
         int n = scan.nextInt();
         int maxWeight = scan.nextInt();
         int[][] items = new int[n][2]; // [0]value, [1]weight
-        boolean[][] updated = new boolean[n + 1][maxWeight + 1];
         int[][] opt = new int[n + 1][maxWeight + 1];
         for (int i = 0; i < n; i++) {
             items[i][0] = scan.nextInt(); // value
             items[i][1] = scan.nextInt(); // weight
         }
 
-        solveKnapsack(opt, items, n, maxWeight, updated);
-        printResult(opt, items, n, maxWeight, updated);
+        solveKnapsack(opt, items, n, maxWeight);
+        printResult(opt, items, n, maxWeight);
 
     }
 
-    private static void solveKnapsack(int[][] opt, int[][] items, int numOfItem, int maxWeight, boolean[][] updated) {
+    private static void solveKnapsack(int[][] opt, int[][] items, int numOfItem, int maxWeight) {
         for (int i = 0; i < numOfItem + 1; i++) {
             for (int w = 0; w < maxWeight + 1; w++) {
                 if (i == 0)
@@ -65,14 +64,13 @@ public class Knapsack {
                         opt[i][w] = left;
                     else {
                         opt[i][w] = right;
-                        updated[i][w] = true;
                     }
                 }
             }
         }
     }
 
-    private static void printResult(int[][] opt, int[][] items, int numOfItem, int maxWeight, boolean[][] updated) {
+    private static void printResult(int[][] opt, int[][] items, int numOfItem, int maxWeight) {
         for (int i = 0; i < numOfItem + 1; i++) {
             for (int j = 0; j < maxWeight + 1; j++)
                 System.out.printf("%-3d ", opt[i][j]);
@@ -83,9 +81,11 @@ public class Knapsack {
 
         System.out.printf("item : ");
         for (int i = numOfItem, j = maxWeight; i > 0; i--)
-            if (updated[i][j]) {
+            if (opt[i][j] != opt[i - 1][j]) {
                 System.out.printf("%d ", i);
                 j -= items[i - 1][1];
             }
+
+
     }
 }
