@@ -56,16 +56,8 @@ public class Knapsack {
                     opt[i][w] = 0;
                 else if (items[i - 1][1] > w)
                     opt[i][w] = opt[i - 1][w];
-                else {
-                    int left = opt[i - 1][w];
-                    int right = items[i - 1][0] + opt[i - 1][w - items[i - 1][1]];
-
-                    if (left >= right)
-                        opt[i][w] = left;
-                    else {
-                        opt[i][w] = right;
-                    }
-                }
+                else
+                    opt[i][w] = Math.max(opt[i - 1][w], items[i - 1][0] + opt[i - 1][w - items[i - 1][1]]);
             }
         }
     }
