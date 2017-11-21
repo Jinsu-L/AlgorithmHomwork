@@ -14,3 +14,4 @@ The report was written in Korean.
 * HW05 - HuffmanCode & MinimizingLatenessProblem
 * HW06 - Dijkstra & Prim
 * HW07 - Knapsack
+* HW08 - SequenceAlignment
