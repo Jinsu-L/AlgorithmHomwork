@@ -5,6 +5,7 @@ public class SequenceAlignment {
     private static final int GAP_PENALTY = 1; // δ
     private static final int MISMATCH_PENALTY = 2; // α
     private static int[][] opt;
+    private static int[] linear_array;
     private static HashSet<Pair> ArrowPath = new HashSet<>();
 
     public static void main(String[] args) {
@@ -50,7 +51,6 @@ public class SequenceAlignment {
     }
 
     private static int[] AllSuffixCosts(String string1, int mid, String string2) {
-
         StringBuilder newSentence = new StringBuilder();
         for (int i = string1.length() - 1; i >= mid - 1; i--) {
             newSentence.append(string1.charAt(i));
@@ -59,10 +59,8 @@ public class SequenceAlignment {
         for (int i = string2.length() - 1; i >= 0; i--) {
             newSentence2.append(string2.charAt(i));
         }
-
-        standardAlignment(newSentence.toString(), newSentence2.toString());
-
-        int[] result = opt[mid + 1];
+        alignment(newSentence.toString(), newSentence2.toString());
+        int[] result = linear_array;
         for (int i = 0; i < result.length / 2; i++) {
             int temp = result[i];
             result[i] = result[result.length - i - 1];
@@ -72,8 +70,29 @@ public class SequenceAlignment {
     }
 
     private static int[] AllYPrefixCosts(String sentence1, int mid, String sentence2) {
-        standardAlignment(sentence1.substring(0, mid), sentence2);
-        return opt[mid];
+        alignment(sentence1.substring(0, mid), sentence2);
+        return linear_array;
+    }
+
+    private static void alignment(String sentence1, String sentence2) {
+        int n = sentence1.length();
+        int m = sentence2.length();
+        int[] row_array = new int[n + 1];
+        linear_array = new int[m + 1];
+        int[] temp = new int[m + 1];
+        for (int i = 0; i < m + 1; i++) {
+            linear_array[i] = i * GAP_PENALTY;
+        }
+        for (int i = 0; i < n + 1; i++) {
+            row_array[i] = i * GAP_PENALTY;
+        }
+        for (int i = 1; i <= n; i++) {
+            temp[0] = row_array[i];
+            for (int j = 1; j <= m; j++) {
+                temp[j] = Integer.min(calculateMisMisMatch(sentence1, sentence2, i, j) + linear_array[j - 1], Integer.min(linear_array[j] + GAP_PENALTY, temp[j - 1] + GAP_PENALTY));
+            }
+            System.arraycopy(temp, 0, linear_array, 0, temp.length);
+        }
     }
 
     private static void standardAlignment(String sentence1, String sentence2) {
