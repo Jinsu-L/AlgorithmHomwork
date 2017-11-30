@@ -3,20 +3,19 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class BellmanFord {
-    public static int[][] adjancyMatrix;
-    public static boolean[][] exist;
-    public static long[] distance;
-    public static int numOfNode;
-    public static int s;
-    public static int t;
-    public static int numOfEdge;
+    private static int[][] adjancyMatrix;
+    private static boolean[][] exist;
+    private static long[] distance;
+    private static int numOfNode;
+    private static int s;
+    private static int t;
 
     public static void main(String[] args) throws FileNotFoundException {
         Scanner scan = new Scanner(new File("Dataset/data10.txt"));
         numOfNode = scan.nextInt();
         s = scan.nextInt();
         t = scan.nextInt();
-        numOfEdge = scan.nextInt();
+        int numOfEdge = scan.nextInt();
         adjancyMatrix = new int[numOfNode][numOfNode];
         exist = new boolean[numOfNode][numOfNode];
         distance = new long[numOfNode];
@@ -31,7 +30,7 @@ public class BellmanFord {
         bellmanFord();
     }
 
-    public static void bellmanFord() {
+    private static void bellmanFord() {
         for (int i = 0; i < numOfNode; i++) {
             if (i == s)
                 distance[i] = 0;
@@ -39,7 +38,7 @@ public class BellmanFord {
                 distance[i] = Integer.MAX_VALUE;
         }
 
-        for (int i = 1; i < numOfNode - 1; i++) {
+        for (int i = 1; i < numOfNode; i++) {
             for (int u = 0; u < numOfNode; u++) {
                 for (int v = 0; v < numOfNode; v++) {
                     if (exist[u][v] && distance[v] > distance[u] + adjancyMatrix[u][v])

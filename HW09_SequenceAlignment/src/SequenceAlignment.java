@@ -1,5 +1,4 @@
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 
 public class SequenceAlignment {
     private static final int GAP_PENALTY = 1; // δ
@@ -15,6 +14,7 @@ public class SequenceAlignment {
         System.out.printf("string2 : ");
         String string1 = scan.nextLine();
         Align(string1, string2, 0, 0);
+
         for (Pair p : ArrowPath) {
             System.out.printf("(%d, %d)", p.x, p.y);
         }
@@ -33,13 +33,12 @@ public class SequenceAlignment {
         int[] YPrefix = AllYPrefixCosts(string1, n / 2, string2);
         int[] YSuffix = AllSuffixCosts(string1, n / 2, string2);
 
-
         int best = Integer.MAX_VALUE;
         int bestq = 0;
         int cost;
         for (int q = 1; q < m; q++) {
             cost = YPrefix[q] + YSuffix[q];
-            if (cost <= best) {
+            if (cost < best) {
                 best = cost;
                 bestq = q;
             }
@@ -51,47 +50,46 @@ public class SequenceAlignment {
     }
 
     private static int[] AllSuffixCosts(String string1, int mid, String string2) {
-        StringBuilder newSentence = new StringBuilder();
+        StringBuilder str1 = new StringBuilder();
         for (int i = string1.length() - 1; i >= mid - 1; i--) {
-            newSentence.append(string1.charAt(i));
+            str1.append(string1.charAt(i));
         }
-        StringBuilder newSentence2 = new StringBuilder();
+        StringBuilder str2 = new StringBuilder();
         for (int i = string2.length() - 1; i >= 0; i--) {
-            newSentence2.append(string2.charAt(i));
+            str2.append(string2.charAt(i));
         }
-        alignment(newSentence.toString(), newSentence2.toString());
+        alignment(str1.toString(), str2.toString());
         int[] result = linear_array;
-        for (int i = 0; i < result.length / 2; i++) {
+        for (int i = 1; i < result.length / 2; i++) {
             int temp = result[i];
-            result[i] = result[result.length - i - 1];
-            result[result.length - i - 1] = temp;
+            result[i] = result[result.length - i];
+            result[result.length - i] = temp;
         }
         return result;
     }
 
-    private static int[] AllYPrefixCosts(String sentence1, int mid, String sentence2) {
-        alignment(sentence1.substring(0, mid), sentence2);
+    private static int[] AllYPrefixCosts(String string1, int mid, String string2) {
+        alignment(string1.substring(0, mid), string2);
         return linear_array;
     }
 
-    private static void alignment(String sentence1, String sentence2) {
-        int n = sentence1.length();
-        int m = sentence2.length();
-        int[] row_array = new int[n + 1];
+    private static void alignment(String string1, String string2) {
+        int n = string1.length();
+        int m = string2.length();
+
         linear_array = new int[m + 1];
-        int[] temp = new int[m + 1];
         for (int i = 0; i < m + 1; i++) {
             linear_array[i] = i * GAP_PENALTY;
         }
-        for (int i = 0; i < n + 1; i++) {
-            row_array[i] = i * GAP_PENALTY;
-        }
+
         for (int i = 1; i <= n; i++) {
-            temp[0] = row_array[i];
+            int tmp_d = i - 1;
+            linear_array[0] = i;
             for (int j = 1; j <= m; j++) {
-                temp[j] = Integer.min(calculateMisMisMatch(sentence1, sentence2, i, j) + linear_array[j - 1], Integer.min(linear_array[j] + GAP_PENALTY, temp[j - 1] + GAP_PENALTY));
+                int tmp = linear_array[j];
+                linear_array[j] = Integer.min(calculateMisMisMatch(string1, string2, i, j) + tmp_d, Integer.min(linear_array[j] + GAP_PENALTY, linear_array[j - 1] + GAP_PENALTY));
+                tmp_d = tmp;
             }
-            System.arraycopy(temp, 0, linear_array, 0, temp.length);
         }
     }
 
@@ -138,7 +136,7 @@ public class SequenceAlignment {
     }
 
 
-    private static class Pair {
+    private static class Pair implements Comparable{
         int x;
         int y;
 
@@ -160,6 +158,11 @@ public class SequenceAlignment {
             int result = x;
             result = 31 * result + y;
             return result;
+        }
+
+        @Override
+        public int compareTo(Object o) {
+            return this.x -((Pair)o).x;
         }
     }
 }
