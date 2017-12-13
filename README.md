@@ -5,8 +5,6 @@ Algorithm HomeWork
 
 This repository is my algorithm class homework.
 
-The report was written in Korean.
-
 * HW01 - MergeSort
 * HW02 - HeapSort & QuickSort
 * HW03 - ClosestPairOfPoints & LoopInvariant(BinarySearch)
@@ -16,3 +14,5 @@ The report was written in Korean.
 * HW07 - Knapsack
 * HW08 - SequenceAlignment
 * HW09 - SequenceAlignment(Linear Space) & Bellman-Ford
+* HW10 - OptimalBinarySearchTree
+* HW11 - BFS & DFS
